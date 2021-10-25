@@ -13,15 +13,31 @@ const log = {
   }, 
 
   attack(attacker, target){
-    console.log(`${attacker.type} has chosen to attack ${target.type}`)    
+    console.log(`${attacker.type} attacks ${target.type}`)    
   },
   
   hit(){
-    console.log(`It's a hit!`)
+    console.log(`It's a hit!\n`)
   },
 
   miss(){
-    console.log(`It's a miss...`)
+    console.log(`It's a miss...\n`)
+  },
+
+  damage(attacker, target){
+    console.log(`${attacker.type} deals ${attacker.stats.AP} damage to ${target.type}\n`)    
+  },
+
+  death(creature){
+    console.log(`${creature.type} has died.\n`)
+  },
+
+  encounter(enemies){
+    console.log("You encounter some enemies!\n")
+    enemies.forEach(enemy => {
+      console.log(enemy.type)
+    })
+    console.log(``)
   }
 
 }

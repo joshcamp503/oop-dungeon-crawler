@@ -5,10 +5,72 @@ const logic = require('./logic')
 
 const creatures = {
 
-  basicTypes: ['Skeleton', 'Goblin', 'Orc'],
+  playerClasses: ['Fighter', 'Wizard', 'Rogue'],
+  basicEnemies: ['Skeleton', 'Goblin', 'Orc'],
+  
+  makeCreature(type){
+    return {
+      type,
+      stats: creatures.stats[type],
+      dead: false,
+      roll: null,
+      initiative: null,
+      selectAction: creatures.selectAction,
+      attack: creatures.attack
+    }
+  },
+
+  generateRandomEnemies(amount){
+    let enemies = [];
+    for(let i = 0; i < amount; i++){
+      let random = logic.rollDice(amount) - 1
+      random = creatures.basicEnemies[random]
+      let enemy = creatures.makeCreature(random)
+      enemies.push(enemy)
+    }
+    return enemies
+  },
+
+  selectAction(action, target){
+    if(action != 'attack') return
+    console.log(`Player chooses to attack`)
+    this.attack(target)
+  },
+
+  attack(target){
+    log.attack(this, target)
+    if(!logic.rollForHit(this, target)) return
+    creatures.changeHP(target, -this.stats.AP)
+    log.damage(this, target)
+  },
+
+  changeHP(target, amount){
+    target.stats.HP += amount;
+    if(target.stats.HP <= 0) logic.kill(target)
+  },
+
+  
 
   stats: {
 
+    Fighter: {
+      HP: 40,
+      AP: 10,
+      DEF: 14,
+      ACC: 4
+    },
+    Wizard: {
+      HP: 20,
+      AP: 16,
+      DEF: 10,
+      ACC: 6
+    },
+    Rogue: {
+      HP: 30,
+      AP: 12,
+      DEF: 12,
+      ACC: 8
+    },
     Skeleton: {
       HP: 20,
       AP: 6,
@@ -40,53 +102,6 @@ const creatures = {
       ACC: 6
     }
 
-  },
-  
-  makeCreature(type){
-    return {
-      type,
-      stats: creatures.stats[type],
-      dead: false,
-      roll: null,
-      turn: null,
-      attack: creatures.attack
-    }
-  },
-
-  generateRandomEnemies(amount){
-    let enemies = [];
-    for(let i = 0; i < amount; i++){
-      let random = logic.dice.roll(amount) - 1
-      random = creatures.basicTypes[random]
-      let enemy = creatures.makeCreature(random)
-      enemies.push(enemy)
-    }
-    return enemies
-  },
-
-  attack(target){
-    log.attack(this, target)
-    if(!creatures.rollForHit(this, target)) return
-    creatures.changeHP(target, -this.stats.AP)
-    log.stat('HP', target)
-  },
-  
-  rollForHit(attacker, defender){
-    attacker.roll = logic.dice.roll(20)
-    let attackRating = attacker.stats.ACC + attacker.roll
-    log.stat('ACC', attacker)
-    log.stat('DEF', defender)
-    log.roll(attacker)
-    if(attackRating <= defender.stats.DEF){
-      log.miss()
-      return false
-    }
-    log.hit()
-    return true
-  },
-
-  changeHP(target, amount){
-    target.stats.HP += amount;
   }
 
 }
