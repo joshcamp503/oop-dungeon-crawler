@@ -1,0 +1,23 @@
+{
+  "name": "oop-dungeon-crawler",
+  "version": "1.0.0",
+  "description": "javascript terminal game",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joshcamp503/oop-dungeon-crawler.git"
+  },
+  "author": "joshcamp503",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joshcamp503/oop-dungeon-crawler/issues"
+  },
+  "homepage": "https://github.com/joshcamp503/oop-dungeon-crawler#readme",
+  "dependencies": {
+    "prompt-sync": "^4.1.6",
+    "readline-sync": "^1.4.10"
+  }
+}

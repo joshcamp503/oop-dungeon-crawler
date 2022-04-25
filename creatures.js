@@ -6,9 +6,10 @@ const logic = require('./logic')
 const creatures = {
 
   playerClasses: ['Fighter', 'Wizard', 'Rogue'],
-  basicEnemies: ['Skeleton', 'Goblin', 'Orc'],
+  basicCreatures: ['Skeleton', 'Goblin', 'Orc'],
   
   makeCreature(type){
+    // takes a string, returns an object
     return {
       type,
       stats: creatures.stats[type],
@@ -20,11 +21,13 @@ const creatures = {
     }
   },
 
-  generateRandomEnemies(amount){
+  generateRandomEnemies(number, enemyType){
+    // takes a number, returns an array of objects
+    // loops number times, creating a random creature each time and pushing it to the enemies array
     let enemies = [];
-    for(let i = 0; i < amount; i++){
-      let random = logic.rollDice(amount) - 1
-      random = creatures.basicEnemies[random]
+    for(let i = 0; i < number; i++){
+      let random = logic.rollDice(number) - 1
+      random = enemyType[random]
       let enemy = creatures.makeCreature(random)
       enemies.push(enemy)
     }
@@ -32,12 +35,14 @@ const creatures = {
   },
 
   selectAction(action, target){
+    // takes an string (action) and an object (target) and executes an action function on target object
     if(action != 'attack') return
     console.log(`Player chooses to attack`)
     this.attack(target)
   },
 
   attack(target){
+    // takes an object and upon condition executes changeHP function on target object
     log.attack(this, target)
     if(!logic.rollForHit(this, target)) return
     creatures.changeHP(target, -this.stats.AP)
@@ -45,6 +50,7 @@ const creatures = {
   },
 
   changeHP(target, amount){
+    // takes a target object and a number amount and changes target's HP stat value accordingly
     target.stats.HP += amount;
     if(target.stats.HP <= 0) logic.kill(target)
   },
@@ -100,6 +106,12 @@ const creatures = {
       AP: 18,
       DEF: 18,
       ACC: 6
+    },
+    Demon: {
+      HP: 500,
+      AP: 500,
+      DEF: 500,
+      ACC: 666
     }
 
   }
